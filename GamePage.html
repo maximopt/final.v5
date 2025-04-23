@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Snake Game</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom right, #1f1c2c, #928dab);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    canvas {
+      background-color: #222;
+      border: 4px solid #28a745;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    a {
+      color: #0dcaf0;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+
+    button, select {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover, select:hover {
+      background-color: #218838;
+    }
+
+    #score {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      color: #ffc107;
+    }
+
+    #high-score {
+      font-size: 1rem;
+      color: #ffa500;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐍 Snake Game</h1>
+  <canvas id="game" width="400" height="400"></canvas>
+  <div id="score">Score: 0</div>
+  <div id="high-score">High Score: 0</div>
+  <select id="difficulty">
+    <option value="150">Easy</option>
+    <option value="100" selected>Medium</option>
+    <option value="70">Hard</option>
+  </select>
+  <button onclick="startGame()">Start Game</button>
+  <button onclick="togglePause()" id="pauseBtn">Pause</button>
+  <a href="index.html">← Back to Scratch Page</a>
+
+  <audio id="eatSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+  <audio id="gameOverSound" src="https://www.soundjay.com/button/sounds/button-10.mp3" preload="auto"></audio>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('score');
+    const highScoreDisplay = document.getElementById('high-score');
+    const eatSound = document.getElementById('eatSound');
+    const gameOverSound = document.getElementById('gameOverSound');
+    const difficultySelect = document.getElementById('difficulty');
+    const pauseBtn = document.getElementById('pauseBtn');
+
+    const box = 20;
+    const canvasSize = 400;
+    const rows = canvasSize / box;
+    const cols = canvasSize / box;
+
+    let snake, direction, food, game, score, highScore = 0, paused = false;
+
+    document.addEventListener('keydown', changeDirection);
+
+    function changeDirection(e) {
+      if (e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+      else if (e.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+      else if (e.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+      else if (e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+    }
+
+    function randomPosition() {
+      return {
+        x: Math.floor(Math.random() * cols) * box,
+        y: Math.floor(Math.random() * rows) * box
+      };
+    }
+
+    function resetGame() {
+      snake = [{ x: 9 * box, y: 9 * box }];
+      direction = 'RIGHT';
+      food = randomPosition();
+      score = 0;
+      updateScore();
+      paused = false;
+      pauseBtn.textContent = 'Pause';
+    }
+
+    function updateScore() {
+      scoreDisplay.textContent = `Score: ${score}`;
+      if (score > highScore) {
+        highScore = score;
+        highScoreDisplay.textContent = `High Score: ${highScore}`;
+      }
+    }
+
+    function drawGame() {
+      if (paused) return;
+
+      ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? '#28a745' : '#34d058';
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = '#f00';
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let head = { ...snake[0] };
+      if (direction === 'LEFT') head.x -= box;
+      if (direction === 'UP') head.y -= box;
+      if (direction === 'RIGHT') head.x += box;
+      if (direction === 'DOWN') head.y += box;
+
+      if (
+        head.x < 0 || head.x >= canvasSize ||
+        head.y < 0 || head.y >= canvasSize ||
+        snake.some((segment, index) => index !== 0 && segment.x === head.x && segment.y === head.y)
+      ) {
+        clearInterval(game);
+        gameOverSound.play();
+        alert('Game Over!');
+        return;
+      }
+
+      if (head.x === food.x && head.y === food.y) {
+        food = randomPosition();
+        score++;
+        updateScore();
+        eatSound.play();
+      } else {
+        snake.pop();
+      }
+
+      snake.unshift(head);
+    }
+
+    function startGame() {
+      clearInterval(game);
+      resetGame();
+      const speed = parseInt(difficultySelect.value);
+      game = setInterval(drawGame, speed);
+    }
+
+    function togglePause() {
+      paused = !paused;
+      pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+    }
+  </script>
+</body>
+</html>

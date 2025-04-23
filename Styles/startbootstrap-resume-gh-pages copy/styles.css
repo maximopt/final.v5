@@ -1,0 +1,28 @@
+/* css/custom.css */
+body {
+    background-color: #eef;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  h1 {
+    color: darkblue;
+    text-align: center;
+  }
+  
+  .custom-box {
+    border: 2px solid #444;
+    margin: 20px;
+    padding: 15px;
+    background-color: #e0f7fa;
+  }
+  
+  ol li ul {
+    list-style-type: circle;
+  }
+  
+  img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+  }

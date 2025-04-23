@@ -1,0 +1,73 @@
+/* custom.css */
+
+body {
+    background-color: #add8e6; /* light blue background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0 20px;
+  }
+  
+  h1, h2 {
+    color: #0a3d62; /* deep navy */
+  }
+  
+  a {
+    color: #1e90ff;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .custom-box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+  }
+  
+  #intro {
+    background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+    border-left: 6px solid #0a3d62;
+  }
+  
+  ol li, ul li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  
+  img {
+    border-radius: 8px;
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  iframe {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  button {
+    background-color: #0a3d62;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #1e90ff;
+  }
+  
+  .tableauPlaceholder {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
